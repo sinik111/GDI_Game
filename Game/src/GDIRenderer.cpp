@@ -27,7 +27,7 @@ ResultCode GDIRenderer::Initialize()
 	front_buffer_dc = GetDC(hwnd); // 윈도우 클라이언트 영역의 Device Context 얻기
 	if (front_buffer_dc == nullptr)
 	{
-		DebugLog("GetDC 실패 - GDIRenderer::Initialize()");
+		DebugLog("GetDC fail - GDIRenderer::Initialize()");
 
 		return RESULT_FAIL;
 	}
@@ -35,7 +35,7 @@ ResultCode GDIRenderer::Initialize()
 	back_buffer_dc = CreateCompatibleDC(front_buffer_dc); // 호환되는 Device Context 생성
 	if (back_buffer_dc == nullptr)
 	{
-		DebugLog("CreateCompatibleDC 실패 - GDIRenderer::Initialize()");
+		DebugLog("CreateCompatibleDC fail - GDIRenderer::Initialize()");
 
 		return RESULT_FAIL;
 	}
@@ -43,7 +43,7 @@ ResultCode GDIRenderer::Initialize()
 	back_buffer_bitmap = CreateCompatibleBitmap(front_buffer_dc, width, height); // 메모리 영역 생성
 	if (back_buffer_bitmap == nullptr)
 	{
-		DebugLog("CreateCompatibleBitmap 실패 - GDIRenderer::Initialize()");
+		DebugLog("CreateCompatibleBitmap fail - GDIRenderer::Initialize()");
 
 		return RESULT_FAIL;
 	}
@@ -54,7 +54,7 @@ ResultCode GDIRenderer::Initialize()
 	Gdiplus::Status status = Gdiplus::GdiplusStartup(&gdiplus_token, &gsi, nullptr);
 	if (status != Gdiplus::Ok)
 	{
-		DebugLog("Gdiplus::GdiplusStartup 실패 status: %d - GDIRenderer::Initialize()", (int)status);
+		DebugLog("Gdiplus::GdiplusStartup fail status: %d - GDIRenderer::Initialize()", (int)status);
 
 		return RESULT_FAIL;
 	}
@@ -62,7 +62,7 @@ ResultCode GDIRenderer::Initialize()
 	back_buffer_graphics = Gdiplus::Graphics::FromHDC(back_buffer_dc);
 	if (back_buffer_graphics == nullptr)
 	{
-		DebugLog("Gdiplus::Graphics::FromHD 실패 - GDIRenderer::Initialize()");
+		DebugLog("Gdiplus::Graphics::FromHD fail - GDIRenderer::Initialize()");
 
 		return RESULT_FAIL;
 	}

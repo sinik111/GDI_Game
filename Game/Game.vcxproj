@@ -138,6 +138,7 @@
     <ClCompile Include="src\GDIRenderer.cpp" />
     <ClCompile Include="src\GameObject.cpp" />
     <ClCompile Include="src\PlayScene.cpp" />
+    <ClCompile Include="src\SceneNameTest.cpp" />
     <ClCompile Include="src\TitleScene.cpp" />
     <ClCompile Include="src\Game.cpp" />
     <ClCompile Include="src\Main.cpp" />
@@ -149,6 +150,7 @@
     <ClInclude Include="inc\GameObject.h" />
     <ClInclude Include="inc\PlayScene.h" />
     <ClInclude Include="inc\Scene.h" />
+    <ClInclude Include="inc\SceneNameTest.h" />
     <ClInclude Include="inc\TitleScene.h" />
   </ItemGroup>
   <ItemGroup>

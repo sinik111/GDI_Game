@@ -25,17 +25,11 @@ ResultCode Game::Initialize(HWND hwnd, int width, int height)
 	ResultCode rc = RESULT_OK;
 
 	gdi_renderer = new GDIRenderer(hwnd, width, height);
-	if (gdi_renderer == nullptr)
-	{
-		DebugLog("GDIRenderer 할당 실패 - Game::Initialize()");
-
-		return RESULT_FAIL;
-	}
 
 	rc = gdi_renderer->Initialize();
 	if (rc != RESULT_OK)
 	{
-		DebugLog("GDIRenderer::Initialize() 실패 - Game::Initialize()");
+		DebugLog("GDIRenderer::Initialize() fail - Game::Initialize()");
 
 		return RESULT_FAIL;
 	}
@@ -43,17 +37,11 @@ ResultCode Game::Initialize(HWND hwnd, int width, int height)
 	next_scene_state = SceneState::Title;
 
 	scene = new TitleScene();
-	if (scene == nullptr)
-	{
-		DebugLog("Scene 할당 실패 - Game::Initialize()");
-
-		return RESULT_FAIL;
-	}
 
 	rc = scene->Initialize();
 	if (rc != RESULT_OK)
 	{
-		DebugLog("Scene::Initialize() 실패 - Game::Initialize()");
+		DebugLog("Scene::Initialize() fail - Game::Initialize()");
 
 		return RESULT_FAIL;
 	}
@@ -86,9 +74,7 @@ void Game::Shutdown()
 
 void Game::Update(float delta_time)
 {
-	CheckSceneState();
-
-	scene->Update(delta_time);
+	Input::Update();
 
 	if (Input::IsKeyReleased('A'))
 	{
@@ -105,7 +91,9 @@ void Game::Update(float delta_time)
 		is_running = false;
 	}
 
-	Input::Update();
+	CheckSceneState();
+
+	scene->Update(delta_time);
 }
 
 void Game::Render()
@@ -143,6 +131,8 @@ void Game::CreateScene()
 {
 	if (scene != nullptr)
 	{
+		scene->Shutdown();
+
 		delete scene;
 		scene = nullptr;
 	}
@@ -158,5 +148,16 @@ void Game::CreateScene()
 		break;
 	}
 
-	scene->Initialize();
+	ResultCode rc = scene->Initialize();
+	if (rc != RESULT_OK)
+	{
+		DebugLog("Scene::Initialize() fail - Game::CreateScene()");
+
+		scene->Shutdown();
+
+		delete scene;
+		scene = nullptr;
+
+		is_running = false;
+	}
 }

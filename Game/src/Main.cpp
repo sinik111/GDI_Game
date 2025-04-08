@@ -35,7 +35,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 	ResultCode rc = game.Initialize(g_hWnd, g_width, g_height);
 	if (rc != RESULT_OK)
 	{
-		DebugLog("game.Initialize() ½ÇÆÐ");
+		DebugLog("game.Initialize() fail - WinMain()");
 
 		game.Shutdown();
 
@@ -67,6 +67,11 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 		float delta_time = my_time.DeltaTime();
 
 		game.Update(delta_time);
+
+		if (!game.IsRunning())
+		{
+			break;
+		}
 
 		game.Render();
 
