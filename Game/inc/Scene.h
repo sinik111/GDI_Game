@@ -12,6 +12,6 @@ public:
 public:
 	virtual ResultCode Initialize() = 0;
 	virtual void Update(float delta_time) = 0;
-	virtual void Render(GDIRenderer& renderer) = 0;
+	virtual void Render(const GDIRenderer& renderer) = 0;
 	virtual void Shutdown() = 0;
 };

@@ -32,7 +32,11 @@ public: // 초기화, 정리
 	void Shutdown();
 
 public: // 그리기
-	void BeginDraw();
-	void DrawImage(Gdiplus::Bitmap* image, Gdiplus::Rect& dst_rect, Gdiplus::Rect& src_rect);
-	void EndDraw();
+	void BeginDraw() const;
+	void DrawImage(Gdiplus::Bitmap* image, Gdiplus::Rect& dst_rect, Gdiplus::Rect& src_rect) const;
+	void EndDraw() const;
+
+public:
+	int GetWidth() const;
+	int GetHeight() const;
 };

@@ -5,9 +5,16 @@
 #include <string>
 #include <gdiplus.h>
 
-static wchar_t data_path[MAX_PATH] = {};
+#include "ResultCode.h"
 
-void FileLoader::Initialize(const wchar_t* binary_folder_name, const wchar_t* data_folder_name)
+FileLoader& FileLoader::GetInstance()
+{
+	static FileLoader instance;
+
+	return instance;
+}
+
+ResultCode FileLoader::Initialize(const wchar_t* binary_folder_name, const wchar_t* resource_folder_name)
 {
 	GetModuleFileNameW(NULL, data_path, MAX_PATH);
 
@@ -31,12 +38,14 @@ void FileLoader::Initialize(const wchar_t* binary_folder_name, const wchar_t* da
 
 	if (wrong_directory)
 	{
-		return;
+		return RESULT_FAIL;
 	}
 	
 	wcscat_s(data_path, MAX_PATH, L"\\");
-	wcscat_s(data_path, MAX_PATH, data_folder_name);
+	wcscat_s(data_path, MAX_PATH, resource_folder_name);
 	wcscat_s(data_path, MAX_PATH, L"\\");
+
+	return RESULT_OK;
 }
 
 
@@ -76,7 +85,7 @@ Gdiplus::Bitmap* FileLoader::LoadImageFile(const wchar_t* file_name)
 
 	wcscat_s(file_path, MAX_PATH, file_name);
 
-	Gdiplus::Bitmap* image = new Gdiplus::Bitmap(file_name);
+	Gdiplus::Bitmap* image = new Gdiplus::Bitmap(file_path);
 
 	if (image->GetLastStatus())
 	{

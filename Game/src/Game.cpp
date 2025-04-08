@@ -9,6 +9,7 @@
 #include "GDIRenderer.h"
 #include "DebugUtility.h"
 #include "ResultCode.h"
+#include "FileLoader.h"
 
 Game::Game()
 	: gdi_renderer(nullptr), scene(nullptr),
@@ -30,6 +31,14 @@ ResultCode Game::Initialize(HWND hwnd, int width, int height)
 	if (rc != RESULT_OK)
 	{
 		DebugLog("GDIRenderer::Initialize() fail - Game::Initialize()");
+
+		return RESULT_FAIL;
+	}
+
+	rc = FileLoader::GetInstance().Initialize(L"bin", L"resources");
+	if (rc != RESULT_OK)
+	{
+		DebugLog("FileLoader::Initialize() fail - Game::Initialize()");
 
 		return RESULT_FAIL;
 	}

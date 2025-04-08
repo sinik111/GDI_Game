@@ -105,17 +105,27 @@ void GDIRenderer::Shutdown()
 	}
 }
 
-void GDIRenderer::BeginDraw()
+void GDIRenderer::BeginDraw() const
 {
 	PatBlt(back_buffer_dc, 0, 0, width, height, BLACKNESS);
 }
 
-void GDIRenderer::DrawImage(Gdiplus::Bitmap* image, Gdiplus::Rect& dst_rect, Gdiplus::Rect& src_rect)
+void GDIRenderer::DrawImage(Gdiplus::Bitmap* image, Gdiplus::Rect& dst_rect, Gdiplus::Rect& src_rect) const
 {
 	back_buffer_graphics->DrawImage(image, dst_rect, src_rect.X, src_rect.Y, src_rect.Width, src_rect.Height, Gdiplus::UnitPixel);
 }
 
-void GDIRenderer::EndDraw()
+void GDIRenderer::EndDraw() const
 {
 	BitBlt(front_buffer_dc, 0, 0, width, height, back_buffer_dc, 0, 0, SRCCOPY);
+}
+
+int GDIRenderer::GetWidth() const
+{
+	return width;
+}
+
+int GDIRenderer::GetHeight() const
+{
+	return height;
 }
