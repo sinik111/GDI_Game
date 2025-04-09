@@ -11,29 +11,25 @@ public:
 	Vector2(float x, float y);
 
 public:
-	Vector2 operator=(const Vector2& other);
+	Vector2& operator=(const Vector2& other);
 
 	Vector2 operator+(const Vector2& other) const;
 	Vector2 operator-(const Vector2& other) const;
 	Vector2 operator*(float scalar) const;
 	Vector2 operator/(float scalar) const;
 
-	Vector2 operator+=(const Vector2& other);
-	Vector2 operator-=(const Vector2& other);
-	Vector2 operator*=(float scalar);
-	Vector2 operator/=(float scalar);
+	Vector2& operator+=(const Vector2& other);
+	Vector2& operator-=(const Vector2& other);
+	Vector2& operator*=(float scalar);
+	Vector2& operator/=(float scalar);
 
 public:
 	float SquareLength() const;
 	float Length() const;
 	Vector2 Normalized() const;
-	Vector2 Normalize();
+	void Normalize();
 
 public:
-	static float SquareLength(const Vector2& v);
-	static float Length(const Vector2& v);
-	static Vector2 Normalized(const Vector2& v);
-	static Vector2 Normalize(Vector2& v);
 	static float Dot(const Vector2& v1, const Vector2& v2);
 
 public:

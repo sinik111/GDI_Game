@@ -22,9 +22,12 @@ Vector2::Vector2(float x, float y)
 {
 }
 
-Vector2 Vector2::operator=(const Vector2& other)
+Vector2& Vector2::operator=(const Vector2& other)
 {
-	return Vector2(this->x = other.x, this->y = other.y);
+	this->x = other.x;
+	this->y = other.y;
+
+	return *this;
 }
 
 Vector2 Vector2::operator+(const Vector2& other) const
@@ -54,22 +57,31 @@ Vector2 Vector2::operator/(float scalar) const
 	return Vector2(this->x / scalar, this->y / scalar);
 }
 
-Vector2 Vector2::operator+=(const Vector2& other)
+Vector2& Vector2::operator+=(const Vector2& other)
 {
-	return Vector2(this->x += other.x, this->y += other.y);
+	this->x += other.x;
+	this->y += other.y;
+
+	return *this;
 }
 
-Vector2 Vector2::operator-=(const Vector2& other)
+Vector2& Vector2::operator-=(const Vector2& other)
 {
-	return Vector2(this->x -= other.x, this->y -= other.y);
+	this->x -= other.x;
+	this->y -= other.y;
+
+	return *this;
 }
 
-Vector2 Vector2::operator*=(float scalar)
+Vector2& Vector2::operator*=(float scalar)
 {
-	return Vector2(this->x *= scalar, this->y *= scalar);
+	this->x *= scalar;
+	this->y *= scalar;
+
+	return *this;
 }
 
-Vector2 Vector2::operator/=(float scalar)
+Vector2& Vector2::operator/=(float scalar)
 {
 	if (scalar == 0.0f)
 	{
@@ -78,7 +90,10 @@ Vector2 Vector2::operator/=(float scalar)
 		return *this;
 	}
 
-	return Vector2(this->x /= scalar, this->y /= scalar);
+	this->x /= scalar;
+	this->y /= scalar;
+
+	return *this;
 }
 
 float Vector2::SquareLength() const
@@ -93,32 +108,26 @@ float Vector2::Length() const
 
 Vector2 Vector2::Normalized() const
 {
-	return *this / Length();
+	float length = Length();
+	if (length == 0.0f)
+	{
+		DebugLog("Cannot divide by zero- Vector2::Normalized()\n");
+
+		return *this;
+	}
+
+	return *this / length;
 }
 
-Vector2 Vector2::Normalize()
+void Vector2::Normalize()
 {
-	return *this /= Length();
-}
+	float length = Length();
+	if (length == 0.0f)
+	{
+		DebugLog("Cannot divide by zero- Vector2::Normalized()\n");
+	}
 
-float Vector2::SquareLength(const Vector2& v)
-{
-	return v.x * v.x + v.y * v.y;
-}
-
-float Vector2::Length(const Vector2& v)
-{
-	return sqrt(SquareLength(v));
-}
-
-Vector2 Vector2::Normalized(const Vector2& v)
-{
-	return v / Length(v);
-}
-
-Vector2 Vector2::Normalize(Vector2& v)
-{
-	return v /= Length(v);
+	*this /= length;
 }
 
 float Vector2::Dot(const Vector2& v1, const Vector2& v2)
