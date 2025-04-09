@@ -5,6 +5,7 @@
 #include "ResultCode.h"
 #include "SceneNameTest.h"
 #include "FileLoader.h"
+#include "Contexts.h"
 
 TitleScene::TitleScene()
 	: object(nullptr)
@@ -22,11 +23,11 @@ TitleScene::~TitleScene()
 	}
 }
 
-ResultCode TitleScene::Initialize()
+ResultCode TitleScene::Initialize(const InitContext& init_context)
 {
 	DebugLog("TitleScene::Initialize()");
 
-	Gdiplus::Bitmap* image = FileLoader::GetInstance().LoadImageFile(L"image/title.png");
+	Gdiplus::Bitmap* image = init_context.file_loader->LoadImageFile(L"image/title.png");
 	if (image == nullptr)
 	{
 		DebugLog("FileLoader::LoadImageFile() fail TitleScene::Initialize()");
@@ -38,9 +39,9 @@ ResultCode TitleScene::Initialize()
 	return RESULT_OK;
 }
 
-void TitleScene::Update(float delta_time)
+void TitleScene::Update(const UpdateContext& update_context)
 {
-	object->Update(delta_time);
+	object->Update(update_context.delta_time);
 }
 
 void TitleScene::Render(const GDIRenderer& renderer)

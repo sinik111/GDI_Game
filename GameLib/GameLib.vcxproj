@@ -133,6 +133,7 @@
     <ClCompile Include="src\FileLoader.cpp" />
     <ClCompile Include="src\Input.cpp" />
     <ClCompile Include="src\MyTime.cpp" />
+    <ClCompile Include="src\Vector2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="inc\DebugUtility.h" />
@@ -140,6 +141,7 @@
     <ClInclude Include="inc\FileLoader.h" />
     <ClInclude Include="inc\Input.h" />
     <ClInclude Include="inc\MyTime.h" />
+    <ClInclude Include="inc\Vector2.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

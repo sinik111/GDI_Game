@@ -3,8 +3,11 @@
 #include <windows.h> // GetAsyncKeyState »ç¿ë
 #include <memory>
 
-static short current_key_state[256] = { 0 };
-static short previous_key_state[256] = { 0 };
+Input::Input()
+{
+    memset(current_key_state, 0, sizeof(current_key_state));
+    memset(previous_key_state, 0, sizeof(previous_key_state));
+}
 
 void Input::Update()
 {

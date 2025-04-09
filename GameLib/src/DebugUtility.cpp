@@ -20,7 +20,7 @@ void __InitializeConsole()
     SetConsoleTitle(L"윈도우 메시지 콘솔 로그");
     use_console = true;
 
-    DebugLog("콘솔 로그 시작...\n");
+    DebugLog("콘솔 로그 시작...");
 }
 
 void __ReleaseConsole()
@@ -36,7 +36,7 @@ static int frame_count = 0;
 static float frame_timer = 0.0f;
 static char fps_buffer[30] = { 0 };
 
-void __CheckFPS(float delta_time)
+void __DisplayFPS(float delta_time)
 {
     ++frame_count;
 
@@ -54,25 +54,25 @@ void __CheckFPS(float delta_time)
 }
 
 // 로그 출력
-void __PrintDebugLog(std::string& str)
+void __PrintDebugLog(const std::string& log)
 {
-    str += "\n";
-    OutputDebugStringA(str.c_str());
+    std::string out = log + "\n";
+    OutputDebugStringA(out.c_str());
 
     if (use_console)
     {
-        std::cout << str;
+        std::cout << out;
     }
 }
 
-void __PrintDebugLog(std::wstring& str)
+void __PrintDebugLog(const std::wstring& log)
 {
-    str += L"\n";
-    OutputDebugStringW(str.c_str());
+    std::wstring out = log + L"\n";
+    OutputDebugStringW(out.c_str());
 
     if (use_console)
     {
-        std::wcout << str;
+        std::wcout << out;
     }
 }
 

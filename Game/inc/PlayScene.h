@@ -3,6 +3,8 @@
 #include "Scene.h"
 
 class GameObject;
+struct InitContext;
+struct UpdateContext;
 enum ResultCode;
 
 class PlayScene : public Scene
@@ -15,10 +17,10 @@ public:
 	~PlayScene();
 
 public:
-	ResultCode Initialize() override;
+	ResultCode Initialize(const InitContext& init_context) override;
 	void Shutdown() override;
 
 public:
-	void Update(float delta_time) override;
+	void Update(const UpdateContext& update_context) override;
 	void Render(const GDIRenderer& renderer) override;
 };

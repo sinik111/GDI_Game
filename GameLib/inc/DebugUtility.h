@@ -22,10 +22,10 @@ void __ReleaseConsole();
 #define DUMP_LEAKS() _CrtDumpMemoryLeaks()
 
 
-// FPS 체크
-#define CHECK_FPS(delta_time) __CheckFPS(delta_time)
+// FPS 출력
+#define DisplayFPS(delta_time) __DisplayFPS(delta_time)
 // 함수를 직접 쓰면 안됨
-void __CheckFPS(float delta_time);
+void __DisplayFPS(float delta_time);
 
 
 // 로그 출력
@@ -33,8 +33,8 @@ void __CheckFPS(float delta_time);
 // printf랑 똑같이 사용하면 됨.
 #define DebugLog(...) __PrintDebugLog(__VA_ARGS__)
 // 함수를 직접 쓰면 안됨
-void __PrintDebugLog(std::string& str);
-void __PrintDebugLog(std::wstring& str);
+void __PrintDebugLog(const std::string& str);
+void __PrintDebugLog(const std::wstring& str);
 void __PrintDebugLog(const char* fmt, ...);
 void __PrintDebugLog(const wchar_t* fmt, ...);
 
@@ -45,7 +45,7 @@ void __PrintDebugLog(const wchar_t* fmt, ...);
 #define ReleaseConsole()		((void)0)
 #define ENABLE_LEAK_CHECK()		((void)0)
 #define DUMP_LEAKS()			((void)0)
-#define CHECK_FPS()				((void)0)
+#define DisplayFPS(delta_time)	((void)0)
 #define DebugLog(...)			((void)0)
 
 #endif // _DEBUG

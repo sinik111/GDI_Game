@@ -54,6 +54,9 @@
     <ClInclude Include="inc\SceneNameTest.h">
       <Filter>헤더 파일\GameObject</Filter>
     </ClInclude>
+    <ClInclude Include="inc\Contexts.h">
+      <Filter>헤더 파일\Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Main.cpp">

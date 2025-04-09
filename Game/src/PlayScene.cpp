@@ -5,6 +5,7 @@
 #include "ResultCode.h"
 #include "FileLoader.h"
 #include "SceneNameTest.h"
+#include "Contexts.h"
 
 PlayScene::PlayScene()
 	: object(nullptr)
@@ -23,13 +24,11 @@ PlayScene::~PlayScene()
 	}
 }
 
-ResultCode PlayScene::Initialize()
+ResultCode PlayScene::Initialize(const InitContext& init_context)
 {
 	DebugLog("PlayScene::Initialize()");
 
-	DebugLog("TitleScene::Initialize()");
-
-	Gdiplus::Bitmap* image = FileLoader::GetInstance().LoadImageFile(L"image/play.png");
+	Gdiplus::Bitmap* image = init_context.file_loader->LoadImageFile(L"image/play.png");
 	if (image == nullptr)
 	{
 		DebugLog("FileLoader::LoadImageFile() fail PlayScene::Initialize()");
@@ -42,7 +41,7 @@ ResultCode PlayScene::Initialize()
 	return RESULT_OK;
 }
 
-void PlayScene::Update(float delta_time)
+void PlayScene::Update(const UpdateContext& update_context)
 {
 }
 

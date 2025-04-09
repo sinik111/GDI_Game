@@ -10,11 +10,12 @@
 #include "DebugUtility.h"
 #include "ResultCode.h"
 #include "FileLoader.h"
+#include "Contexts.h"
 
 Game::Game()
-	: gdi_renderer(nullptr), scene(nullptr),
+	: gdi_renderer(nullptr), file_loader(nullptr), input(nullptr), scene(nullptr),
 	current_scene_state(SceneState::None), next_scene_state(SceneState::None),
-	is_running(true)
+	is_running(false)
 {
 	DebugLog("Game 积己凳");
 }
@@ -24,6 +25,15 @@ ResultCode Game::Initialize(HWND hwnd, int width, int height)
 	DebugLog("Game::Initialize()");
 
 	ResultCode rc = RESULT_OK;
+
+	if (hwnd == nullptr)
+	{
+		DebugLog("hwnd is nullptr - Game::Initialize()");
+
+		return RESULT_FAIL;
+	}
+
+	// Game 林夸 葛碘 积己
 
 	gdi_renderer = new GDIRenderer(hwnd, width, height);
 
@@ -35,7 +45,9 @@ ResultCode Game::Initialize(HWND hwnd, int width, int height)
 		return RESULT_FAIL;
 	}
 
-	rc = FileLoader::GetInstance().Initialize(L"bin", L"resources");
+	file_loader = new FileLoader(L"bin", L"resources");
+
+	rc = file_loader->Initialize();
 	if (rc != RESULT_OK)
 	{
 		DebugLog("FileLoader::Initialize() fail - Game::Initialize()");
@@ -43,19 +55,24 @@ ResultCode Game::Initialize(HWND hwnd, int width, int height)
 		return RESULT_FAIL;
 	}
 
+	input = new Input();
+
+
+	// Title Scene 积己
+
 	next_scene_state = SceneState::Title;
 
-	scene = new TitleScene();
-
-	rc = scene->Initialize();
+	rc = CreateScene();
 	if (rc != RESULT_OK)
 	{
-		DebugLog("Scene::Initialize() fail - Game::Initialize()");
+		DebugLog("CreateScene() fail - Game::Initialize()");
 
 		return RESULT_FAIL;
 	}
 
 	current_scene_state = next_scene_state;
+
+	is_running = true;
 
 	return RESULT_OK;
 }
@@ -77,32 +94,54 @@ void Game::Shutdown()
 		delete gdi_renderer;
 		gdi_renderer = nullptr;
 	}
+
+	if (file_loader != nullptr)
+	{
+		delete file_loader;
+		file_loader = nullptr;
+	}
+
+	if (input != nullptr)
+	{
+		delete input;
+		input = nullptr;
+	}
 }
 
 // game loop ---
 
 void Game::Update(float delta_time)
 {
-	Input::Update();
+	input->Update();
 
-	if (Input::IsKeyReleased('A'))
+	if (input->IsKeyReleased('A'))
 	{
 		ChangeScene(SceneState::Play);
 	}
 
-	if (Input::IsKeyReleased('B'))
+	if (input->IsKeyReleased('B'))
 	{
 		ChangeScene(SceneState::Title);
 	}
 
-	if (Input::IsKeyReleased(VK_ESCAPE))
+	if (input->IsKeyReleased(VK_ESCAPE))
 	{
 		is_running = false;
 	}
 
 	CheckSceneState();
 
-	scene->Update(delta_time);
+	if (!is_running)
+	{
+		return;
+	}
+
+	UpdateContext update_context;
+	update_context.delta_time = delta_time;
+	update_context.input = input;
+	update_context.file_loader = file_loader;
+
+	scene->Update(update_context);
 }
 
 void Game::Render()
@@ -136,7 +175,7 @@ void Game::CheckSceneState()
 	}
 }
 
-void Game::CreateScene()
+ResultCode Game::CreateScene()
 {
 	if (scene != nullptr)
 	{
@@ -157,7 +196,10 @@ void Game::CreateScene()
 		break;
 	}
 
-	ResultCode rc = scene->Initialize();
+	InitContext init_context;
+	init_context.file_loader = file_loader;
+
+	ResultCode rc = scene->Initialize(init_context);
 	if (rc != RESULT_OK)
 	{
 		DebugLog("Scene::Initialize() fail - Game::CreateScene()");
@@ -168,5 +210,9 @@ void Game::CreateScene()
 		scene = nullptr;
 
 		is_running = false;
+
+		return RESULT_FAIL;
 	}
+
+	return RESULT_OK;
 }

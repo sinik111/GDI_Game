@@ -11,6 +11,9 @@ enum class SceneState
 
 class Scene;
 class GDIRenderer;
+class FileLoader;
+class Input;
+
 enum ResultCode;
 
 class Game
@@ -18,6 +21,12 @@ class Game
 private:
 	// Renderer
 	GDIRenderer* gdi_renderer;
+
+	// FileLoader
+	FileLoader* file_loader;
+
+	// Input
+	Input* input;
 
 	// 씬 관련 변수들
 	Scene* scene;
@@ -48,5 +57,5 @@ public:
 
 private:
 	void CheckSceneState();
-	void CreateScene();
+	ResultCode CreateScene();
 };
