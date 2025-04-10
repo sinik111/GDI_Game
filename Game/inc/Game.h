@@ -25,9 +25,6 @@ private:
 	// FileLoader
 	FileLoader* file_loader;
 
-	// Input
-	Input* input;
-
 	// 씬 관련 변수들
 	Scene* scene;
 

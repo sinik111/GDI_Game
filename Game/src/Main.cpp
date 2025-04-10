@@ -30,6 +30,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	ResultCode rc = RESULT_OK;
 
 	WindowInfo window_info;
+	window_info.hwnd = nullptr;
 	window_info.hinstance = hInstance;
 	window_info.class_name = TEXT("GDI");
 	window_info.window_name = TEXT("GDI_Game");
@@ -41,6 +42,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	if (rc != RESULT_OK)
 	{
 		DebugLog("InitializeWindow() fail - WinMain()");
+
+		return 0;
 	}
 
 	Game game;
@@ -48,6 +51,10 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	if (rc != RESULT_OK)
 	{
 		DebugLog("Game::Initialize() fail - WinMain()");
+
+		game.Shutdown();
+
+		return 0;
 	}
 
 	MyTime my_time;
@@ -86,8 +93,6 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 	game.Shutdown();
 
-	ReleaseConsole();
-
 	DUMP_LEAKS();
 
 	return (int)msg.wParam;
@@ -114,7 +119,13 @@ static ResultCode InitializeWindow(WindowInfo& window_info)
 	wc.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
 	wc.hCursor = LoadCursor(NULL, IDC_ARROW); // 기본 커서 모양
 	wc.hIcon = LoadIcon(NULL, IDI_APPLICATION); // 기본 아이콘 모양
-	RegisterClass(&wc);
+	ATOM result = RegisterClass(&wc);
+	if (result == 0)
+	{
+		DebugLog("RegisterClass() fail - InitializeWindow()");
+
+		return RESULT_FAIL;
+	}
 
 	// 창 크기 딱 맞게 조정
 	RECT rcClient = { 0, 0, (LONG)window_info.width, (LONG)window_info.height };
@@ -125,8 +136,8 @@ static ResultCode InitializeWindow(WindowInfo& window_info)
 		window_info.class_name,			// 윈도우 클래스 이름
 		window_info.window_name,		// 창 제목
 		WS_OVERLAPPEDWINDOW,			// 윈도우 스타일
-		800,							// 윈도우 위치 x
-		500,							// 윈도우 위치 y
+		CW_USEDEFAULT,					// 윈도우 위치 x
+		CW_USEDEFAULT,					// 윈도우 위치 y
 		rcClient.right - rcClient.left,	// 윈도우 크기 x
 		rcClient.bottom - rcClient.top, // 윈도우 크기 y
 		NULL,							// 부모 윈도우

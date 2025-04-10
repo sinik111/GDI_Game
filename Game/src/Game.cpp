@@ -13,7 +13,7 @@
 #include "Contexts.h"
 
 Game::Game()
-	: gdi_renderer(nullptr), file_loader(nullptr), input(nullptr), scene(nullptr),
+	: gdi_renderer(nullptr), file_loader(nullptr), scene(nullptr),
 	current_scene_state(SceneState::None), next_scene_state(SceneState::None),
 	is_running(false)
 {
@@ -25,13 +25,6 @@ ResultCode Game::Initialize(HWND hwnd, int width, int height)
 	DebugLog("Game::Initialize()");
 
 	ResultCode rc = RESULT_OK;
-
-	if (hwnd == nullptr)
-	{
-		DebugLog("hwnd is nullptr - Game::Initialize()");
-
-		return RESULT_FAIL;
-	}
 
 	// Game 林夸 葛碘 积己
 
@@ -54,8 +47,6 @@ ResultCode Game::Initialize(HWND hwnd, int width, int height)
 
 		return RESULT_FAIL;
 	}
-
-	input = new Input();
 
 
 	// Title Scene 积己
@@ -100,31 +91,23 @@ void Game::Shutdown()
 		delete file_loader;
 		file_loader = nullptr;
 	}
-
-	if (input != nullptr)
-	{
-		delete input;
-		input = nullptr;
-	}
 }
 
 // game loop ---
 
 void Game::Update(float delta_time)
 {
-	input->Update();
-
-	if (input->IsKeyReleased('A'))
+	if (Input::GetInstance().IsKeyReleased('A'))
 	{
 		ChangeScene(SceneState::Play);
 	}
 
-	if (input->IsKeyReleased('B'))
+	if (Input::GetInstance().IsKeyReleased('B'))
 	{
 		ChangeScene(SceneState::Title);
 	}
 
-	if (input->IsKeyReleased(VK_ESCAPE))
+	if (Input::GetInstance().IsKeyReleased(VK_ESCAPE))
 	{
 		is_running = false;
 	}
@@ -137,8 +120,6 @@ void Game::Update(float delta_time)
 	}
 
 	UpdateContext update_context;
-	update_context.delta_time = delta_time;
-	update_context.input = input;
 	update_context.file_loader = file_loader;
 
 	scene->Update(update_context);

@@ -9,6 +9,13 @@ Input::Input()
     memset(previous_key_state, 0, sizeof(previous_key_state));
 }
 
+Input& Input::GetInstance()
+{
+    static Input instance;
+
+    return instance;
+}
+
 void Input::Update()
 {
     memcpy_s(previous_key_state, sizeof(previous_key_state), current_key_state, sizeof(current_key_state));

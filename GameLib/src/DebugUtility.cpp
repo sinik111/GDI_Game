@@ -93,8 +93,7 @@ void __PrintDebugLog(const char* fmt, ...)
 
     if (use_console)
     {
-        printf(buffer);
-        printf("\n");
+        printf("%s\n", buffer);
     }
 }
 
@@ -115,8 +114,7 @@ void __PrintDebugLog(const wchar_t* fmt, ...)
 
     if (use_console)
     {
-        wprintf(buffer);
-        wprintf(L"\n");
+        wprintf(L"%s\n", buffer);
 
     }
 }

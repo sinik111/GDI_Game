@@ -5,12 +5,12 @@
 #include <string>
 
 // 콘솔 초기화
-#define InitializeConsole() __InitializeConsole()
+#define InitializeConsole() UseConsole use_console
 // 함수를 직접 쓰면 안됨
 void __InitializeConsole();
 
 // 콘솔 해제
-#define ReleaseConsole() __ReleaseConsole()
+//#define ReleaseConsole() __ReleaseConsole()
 // 함수를 직접 쓰면 안됨
 void __ReleaseConsole();
 
@@ -37,6 +37,20 @@ void __PrintDebugLog(const std::string& str);
 void __PrintDebugLog(const std::wstring& str);
 void __PrintDebugLog(const char* fmt, ...);
 void __PrintDebugLog(const wchar_t* fmt, ...);
+
+class UseConsole
+{
+public:
+	UseConsole()
+	{
+		__InitializeConsole();
+	}
+
+	~UseConsole()
+	{
+		__ReleaseConsole();
+	}
+};
 
 #else // !_DEBUG
 // 디버그 모드가 아닐때는 함수 없앰
