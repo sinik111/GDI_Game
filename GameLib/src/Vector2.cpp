@@ -1,99 +1,115 @@
 #include "Vector2.h"
 
 #include <cmath>
+#include <string>
 
-#include "DebugUtility.h"
+const Vector2 Vector2::Zero{ 0.0f, 0.0f };
+const Vector2 Vector2::One{ 1.0f, 1.0f };
 
-const Vector2 Vector2::Zero = Vector2(0.0f, 0.0f);
-const Vector2 Vector2::One = Vector2(1.0f, 1.0f);
-
-const Vector2 Vector2::Up = Vector2(0.0f, 1.0f);
-const Vector2 Vector2::Down = Vector2(0.0f, -1.0f);
-const Vector2 Vector2::Right = Vector2(1.0f, 0.0f);
-const Vector2 Vector2::Left = Vector2(-1.0f, 0.0f);
+const Vector2 Vector2::Up{ 0.0f, 1.0f };
+const Vector2 Vector2::Down{ 0.0f, -1.0f };
+const Vector2 Vector2::Right{ 1.0f, 0.0f };
+const Vector2 Vector2::Left{ -1.0f, 0.0f };
 
 Vector2::Vector2()
+#ifdef _DEBUG
+	: x(NAN), y(NAN)
+#else
 	: x(0.0f), y(0.0f)
+#endif // _DEBUG
 {
 }
 
 Vector2::Vector2(float x, float y)
-	:x(x), y(y)
+	: x(x), y(y)
 {
 }
 
-Vector2& Vector2::operator=(const Vector2& other)
+Vector2::Vector2(const Vector2& other)
+	: x(other.x), y(other.y)
 {
-	this->x = other.x;
-	this->y = other.y;
+}
+
+Vector2& Vector2::operator=(const Vector2& rhs)
+{
+	this->x = rhs.x;
+	this->y = rhs.y;
 
 	return *this;
 }
 
-Vector2 Vector2::operator+(const Vector2& other) const
+Vector2& Vector2::operator+=(const Vector2& rhs)
 {
-	return Vector2(this->x + other.x, this->y + other.y);
+	this->x += rhs.x;
+	this->y += rhs.y;
+
+	return *this;
 }
 
-Vector2 Vector2::operator-(const Vector2& other) const
+Vector2& Vector2::operator-=(const Vector2& rhs)
 {
-	return Vector2(this->x - other.x, this->y - other.y);
+	this->x -= rhs.x;
+	this->y -= rhs.y;
+
+	return *this;
 }
 
-Vector2 Vector2::operator*(float scalar) const
+Vector2& Vector2::operator*=(float rhs)
 {
-	return Vector2(this->x * scalar, this->y * scalar);
+	this->x *= rhs;
+	this->y *= rhs;
+
+	return *this;
 }
 
-Vector2 Vector2::operator/(float scalar) const
+Vector2& Vector2::operator/=(float rhs)
 {
-	if (scalar == 0.0f)
+	if (rhs == 0.0f)
 	{
-		DebugLog("Cannot divide by zero- Vector2\n");
+#ifdef _DEBUG
+		this->x = NAN;
+		this->y = NAN;
+#else
+		this->x = 0.0f;
+		this->y = 0.0f;
+#endif // _DEBUG
 
 		return *this;
 	}
 
-	return Vector2(this->x / scalar, this->y / scalar);
-}
-
-Vector2& Vector2::operator+=(const Vector2& other)
-{
-	this->x += other.x;
-	this->y += other.y;
+	this->x /= rhs;
+	this->y /= rhs;
 
 	return *this;
 }
 
-Vector2& Vector2::operator-=(const Vector2& other)
+Vector2 Vector2::operator+(const Vector2& rhs) const
 {
-	this->x -= other.x;
-	this->y -= other.y;
-
-	return *this;
+	return Vector2(this->x + rhs.x, this->y + rhs.y);
 }
 
-Vector2& Vector2::operator*=(float scalar)
+Vector2 Vector2::operator-(const Vector2& rhs) const
 {
-	this->x *= scalar;
-	this->y *= scalar;
-
-	return *this;
+	return Vector2(this->x - rhs.x, this->y - rhs.y);
 }
 
-Vector2& Vector2::operator/=(float scalar)
+Vector2 Vector2::operator*(float rhs) const
 {
-	if (scalar == 0.0f)
+	return Vector2(this->x * rhs, this->y * rhs);
+}
+
+Vector2 Vector2::operator/(float rhs) const
+{
+	if (rhs == 0.0f)
 	{
-		DebugLog("Cannot divide by zero- Vector2\n");
-
-		return *this;
+#ifdef _DEBUG
+		return Vector2(NAN, NAN);
+#else
+		return Vector2(0.0f, 0.0f);
+#endif // _DEBUG
 	}
 
-	this->x /= scalar;
-	this->y /= scalar;
-
-	return *this;
+	return Vector2(this->x / rhs, this->y / rhs);
 }
 
 float Vector2::SquareLength() const
@@ -111,9 +127,11 @@ Vector2 Vector2::Normalized() const
 	float length = Length();
 	if (length == 0.0f)
 	{
-		DebugLog("Cannot divide by zero- Vector2::Normalized()\n");
-
-		return *this;
+#ifdef _DEBUG
+		return Vector2(NAN, NAN);
+#else
+		return Vector2(0.0f, 0.0f);
+#endif // _DEBUG
 	}
 
 	return *this / length;
@@ -124,13 +142,57 @@ void Vector2::Normalize()
 	float length = Length();
 	if (length == 0.0f)
 	{
-		DebugLog("Cannot divide by zero- Vector2::Normalized()\n");
+#ifdef _DEBUG
+		this->x = NAN;
+		this->y = NAN;
+#else
+		this->x = 0.0f;
+		this->y = 0.0f;
+#endif // _DEBUG
+
+		return;
 	}
 
 	*this /= length;
 }
 
+std::string Vector2::ToString() const
+{
+	return std::string("( " + std::to_string(this->x) + ", " + std::to_string(this->y) + " )");
+}
+
+bool Vector2::IsZero() const
+{
+	//return (this->x < FLT_EPSILON && this->y < FLT_EPSILON);
+	return (this->x == 0.0f && this->y == 0.0f);
+}
+
 float Vector2::Dot(const Vector2& v1, const Vector2& v2)
 {
 	return v1.x * v2.x + v1.y * v2.y;
+}
+
+float Vector2::Distance(const Vector2& v1, const Vector2& v2)
+{
+	return (v1 - v2).Length();
+}
+
+float Vector2::SquareDistance(const Vector2& v1, const Vector2& v2)
+{
+	return (v1 - v2).SquareLength();
+}
+
+Vector2 Vector2::Direction(const Vector2& dst, const Vector2& src)
+{
+	return (dst - src).Normalized();
+}
+
+Vector2 Vector2::Lerp(const Vector2& v0, const Vector2& v1, float t)
+{
+	return Vector2(v0.x * (1.0f - t) + v1.x * t, v0.y * (1.0f - t) + v1.y * t);
+}
+
+Vector2 Vector2::Reflect(const Vector2& dir, const Vector2& normal)
+{
+	return Vector2(dir - normal * 2 * Dot(dir, normal));
 }
