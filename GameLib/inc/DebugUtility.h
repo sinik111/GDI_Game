@@ -56,7 +56,7 @@ public:
 // 디버그 모드가 아닐때는 함수 없앰
 
 #define InitializeConsole()		((void)0)
-#define ReleaseConsole()		((void)0)
+//#define ReleaseConsole()		((void)0)
 #define ENABLE_LEAK_CHECK()		((void)0)
 #define DUMP_LEAKS()			((void)0)
 #define DisplayFPS(delta_time)	((void)0)
