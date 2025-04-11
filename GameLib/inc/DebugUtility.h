@@ -4,7 +4,7 @@
 
 #include <string>
 
-// 콘솔 초기화
+// 콘솔 초기화.. 자동 해제됨
 #define InitializeConsole() UseConsole use_console
 // 함수를 직접 쓰면 안됨
 void __InitializeConsole();
