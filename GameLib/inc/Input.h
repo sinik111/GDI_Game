@@ -3,13 +3,12 @@
 class Input
 {
 private:
-	short current_key_state[256];
-	short previous_key_state[256];
+	bool current_key_state[256];
+	bool previous_key_state[256];
 
 private:
 	Input();
 	Input(const Input&) = delete;
-	void operator=(const Input&) = delete;
 
 public:
 	static Input& GetInstance();

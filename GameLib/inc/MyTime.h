@@ -11,8 +11,11 @@ private:
 
 	float delta_time;
 
-public:
+private:
 	MyTime();
+
+public:
+	static MyTime& GetInstance();
 
 public:
 	void Initialize();

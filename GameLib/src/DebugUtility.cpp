@@ -29,6 +29,8 @@ void __ReleaseConsole()
     fclose(stdout);
     // 콘솔 해제
     FreeConsole();
+
+    use_console = false;
 }
 
 // FPS 출력

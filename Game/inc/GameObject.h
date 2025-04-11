@@ -13,6 +13,6 @@ public:
 	virtual void Destroy() = 0;
 
 public:
-	virtual void Update(float delta_time) = 0;
-	virtual void Render(const GDIRenderer& renderer) = 0;
+	virtual void Update() = 0;
+	virtual void Render(const GDIRenderer&) = 0;
 };

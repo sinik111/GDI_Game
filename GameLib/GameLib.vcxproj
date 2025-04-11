@@ -137,6 +137,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="inc\DebugUtility.h" />
+    <ClInclude Include="inc\HashMap.h" />
     <ClInclude Include="inc\ResultCode.h" />
     <ClInclude Include="inc\FileLoader.h" />
     <ClInclude Include="inc\Input.h" />

@@ -3,7 +3,7 @@
 #include <windows.h>
 #include <gdiplus.h>
 
-enum ResultCode;
+enum class ResultCode;
 
 class GDIRenderer
 {
@@ -23,12 +23,15 @@ private:
 	ULONG_PTR gdiplus_token;
 	Gdiplus::Graphics* back_buffer_graphics;
 
-public: // 생성자, 소멸자
-	GDIRenderer(HWND hwnd, int width, int height);
+private: // 생성자, 소멸자
+	GDIRenderer();
 	~GDIRenderer();
 
+public:
+	static GDIRenderer& GetInstance();
+
 public: // 초기화, 정리
-	ResultCode Initialize();
+	ResultCode Initialize(HWND hwnd, int width, int height);
 	void Shutdown();
 
 public: // 그리기

@@ -27,7 +27,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 	InitializeConsole();
 
-	ResultCode rc = RESULT_OK;
+	ResultCode rc = ResultCode::OK;
 
 	WindowInfo window_info;
 	window_info.hwnd = nullptr;
@@ -39,7 +39,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	window_info.cmd_show = nCmdShow;
 
 	rc = InitializeWindow(window_info);
-	if (rc != RESULT_OK)
+	if (rc != ResultCode::OK)
 	{
 		DebugLog("InitializeWindow() fail - WinMain()");
 
@@ -48,7 +48,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 	Game game;
 	rc = game.Initialize(window_info.hwnd, window_info.width, window_info.height);
-	if (rc != RESULT_OK)
+	if (rc != ResultCode::OK)
 	{
 		DebugLog("Game::Initialize() fail - WinMain()");
 
@@ -57,8 +57,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		return 0;
 	}
 
-	MyTime my_time;
-	my_time.Initialize();
+	MyTime::GetInstance().Initialize();
 
 	MSG msg = {};
 
@@ -75,20 +74,12 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			DispatchMessage(&msg);
 		}
 
-		my_time.Update();
+		MyTime::GetInstance().Update();
 
-		float delta_time = my_time.DeltaTime();
-
-		game.Update(delta_time);
-
-		if (!game.IsRunning())
-		{
-			break;
-		}
-
+		game.Update();
 		game.Render();
 
-		DisplayFPS(delta_time);
+		DisplayFPS(MyTime::GetInstance().DeltaTime());
 	}
 
 	game.Shutdown();
@@ -124,7 +115,7 @@ static ResultCode InitializeWindow(WindowInfo& window_info)
 	{
 		DebugLog("RegisterClass() fail - InitializeWindow()");
 
-		return RESULT_FAIL;
+		return ResultCode::FAIL;
 	}
 
 	// 창 크기 딱 맞게 조정
@@ -149,12 +140,12 @@ static ResultCode InitializeWindow(WindowInfo& window_info)
 	{
 		DebugLog("CreateWindow() fail - InitializeWindow()");
 
-		return RESULT_FAIL;
+		return ResultCode::FAIL;
 	}
 
 	ShowWindow(window_info.hwnd, window_info.cmd_show);
 
 	UpdateWindow(window_info.hwnd);
 
-	return RESULT_OK;
+	return ResultCode::OK;
 }

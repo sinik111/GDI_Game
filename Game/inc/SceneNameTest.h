@@ -7,8 +7,6 @@ namespace Gdiplus
 	class Bitmap;
 }
 
-class GDIRenderer;
-
 class SceneNameTest : public GameObject
 {
 private:
@@ -23,6 +21,6 @@ public: // 초기화, 정리
 	void Destroy() override;
 
 public: // 루프
-	void Update(float delta_time) override;
+	void Update() override;
 	void Render(const GDIRenderer& renderer) override;
 };

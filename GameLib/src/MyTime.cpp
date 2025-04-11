@@ -8,6 +8,13 @@ MyTime::MyTime()
 	
 }
 
+MyTime& MyTime::GetInstance()
+{
+	static MyTime instance;
+
+	return instance;
+}
+
 void MyTime::Initialize()
 {
 	QueryPerformanceFrequency(&frequency);

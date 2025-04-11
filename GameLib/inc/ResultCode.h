@@ -1,7 +1,7 @@
 #pragma once
 
-enum ResultCode
+enum class ResultCode
 {
-	RESULT_OK,
-	RESULT_FAIL
+	OK,
+	FAIL
 };

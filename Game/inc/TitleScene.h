@@ -3,9 +3,7 @@
 #include "Scene.h"
 
 class GameObject;
-struct InitContext;
-struct UpdateContext;
-enum ResultCode;
+enum class ResultCode;
 
 class TitleScene : public Scene
 {
@@ -17,10 +15,10 @@ public:
 	~TitleScene();
 
 public:
-	ResultCode Initialize(const InitContext& init_context) override;
+	ResultCode Initialize() override;
 	void Shutdown() override;
 
 public:
-	void Update(const UpdateContext& update_context) override;
-	void Render(const GDIRenderer& renderer) override;
+	void Update() override;
+	void Render() override;
 };

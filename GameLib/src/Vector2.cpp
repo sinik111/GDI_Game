@@ -25,6 +25,19 @@ Vector2::Vector2(float x, float y)
 {
 }
 
+Vector2::Vector2(const Vector2& other)
+	: x(other.x), y(other.y)
+{
+}
+
+Vector2& Vector2::operator=(const Vector2& rhs)
+{
+	this->x = rhs.x;
+	this->y = rhs.y;
+
+	return *this;
+}
+
 Vector2& Vector2::operator+=(const Vector2& rhs)
 {
 	this->x += rhs.x;
@@ -51,7 +64,8 @@ Vector2& Vector2::operator*=(float rhs)
 
 Vector2& Vector2::operator/=(float rhs)
 {
-	if (rhs == 0.0f)
+	if (fabs(rhs) < FLT_EPSILON)
+	//if (rhs == 0.0f)
 	{
 #ifdef _DEBUG
 		this->x = NAN;
@@ -87,7 +101,8 @@ Vector2 Vector2::operator*(float rhs) const
 
 Vector2 Vector2::operator/(float rhs) const
 {
-	if (rhs == 0.0f)
+	if (fabs(rhs) < FLT_EPSILON)
+	//if (rhs == 0.0f)
 	{
 #ifdef _DEBUG
 		return Vector2(NAN, NAN);
@@ -112,7 +127,8 @@ float Vector2::Length() const
 Vector2 Vector2::Normalized() const
 {
 	float length = Length();
-	if (length == 0.0f)
+	if (length < FLT_EPSILON)
+	//if (length == 0.0f)
 	{
 #ifdef _DEBUG
 		return Vector2(NAN, NAN);
@@ -127,7 +143,8 @@ Vector2 Vector2::Normalized() const
 void Vector2::Normalize()
 {
 	float length = Length();
-	if (length == 0.0f)
+	if (length < FLT_EPSILON)
+	//if (length == 0.0f)
 	{
 #ifdef _DEBUG
 		this->x = NAN;
@@ -150,8 +167,8 @@ std::string Vector2::ToString() const
 
 bool Vector2::IsZero() const
 {
-	//return (this->x < FLT_EPSILON && this->y < FLT_EPSILON);
-	return (this->x == 0.0f && this->y == 0.0f);
+	return (fabs(this->x) < FLT_EPSILON && fabs(this->y) < FLT_EPSILON);
+	//return (this->x == 0.0f && this->y == 0.0f);
 }
 
 float Vector2::Dot(const Vector2& v1, const Vector2& v2)

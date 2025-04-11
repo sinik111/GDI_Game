@@ -29,19 +29,24 @@ public:
 	public:
 		void operator++()
 		{
-			prev = curr;
-			curr = curr->next;
+			if (this->curr == nullptr)
+			{
+				return;
+			}
+
+			this->prev = this->curr;
+			this->curr = this->curr->next;
 		}
 
 		T& operator*() const
 		{
-			return curr->data;
+			return this->curr->data;
 		}
 
 	public:
 		bool IsEnd() const
 		{
-			return curr == nullptr;
+			return this->curr == nullptr;
 		}
 	};
 
@@ -55,6 +60,7 @@ public:
 	{
 
 	}
+	SinglyLinkedList(const SinglyLinkedList&) = delete;
 	~SinglyLinkedList()
 	{
 		Clear();
@@ -77,7 +83,7 @@ public:
 		}
 	}
 
-	Iterator Remove(Iterator& iter)
+	Iterator Remove(Iterator iter)
 	{
 		if (iter.curr == nullptr)
 		{
@@ -117,6 +123,8 @@ public:
 
 		delete iter.curr;
 
+		iter.curr = nullptr;
+
 		return next;
 	}
 
@@ -129,6 +137,8 @@ public:
 			next_node = current_node->next;
 
 			delete current_node;
+
+			current_node = nullptr;
 
 			current_node = next_node;
 		}

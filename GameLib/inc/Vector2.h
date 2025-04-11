@@ -2,7 +2,7 @@
 
 #include <string>
 
-struct Vector2
+class Vector2
 {
 public:
 	float x;
@@ -11,8 +11,10 @@ public:
 public:
 	Vector2();
 	Vector2(float x, float y);
+	Vector2(const Vector2& other);
 
 public:
+	Vector2& operator=(const Vector2& rhs);
 	Vector2& operator+=(const Vector2& rhs);
 	Vector2& operator-=(const Vector2& rhs);
 	Vector2& operator*=(float rhs);

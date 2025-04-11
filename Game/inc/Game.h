@@ -2,57 +2,30 @@
 
 #include <windows.h>
 
-enum class SceneState
-{
-	None,
-	Title,
-	Play
-};
-
-class Scene;
+class SceneManager;
 class GDIRenderer;
 class FileLoader;
 class Input;
 
-enum ResultCode;
+enum class ResultCode;
 
 class Game
 {
 private:
-	// Renderer
-	GDIRenderer* gdi_renderer;
-
-	// FileLoader
-	FileLoader* file_loader;
-
-	// 씬 관련 변수들
-	Scene* scene;
-
-	SceneState current_scene_state;
-	SceneState next_scene_state;
-
-	// 게임 종료
 	bool is_running;
 
 public: // 생성자, 소멸자
 	Game();
-	~Game() = default;
+	~Game();
 
 public: // 초기화, 정리
 	ResultCode Initialize(HWND hWnd, int width, int height);
 	void Shutdown();
 
 public: // 루프
-	void Update(float delta_time);
+	void Update();
 	void Render();
 
 public:
 	bool IsRunning();
-
-public:
-	void ChangeScene(SceneState new_scene);
-
-private:
-	void CheckSceneState();
-	ResultCode CreateScene();
 };

@@ -7,20 +7,23 @@ namespace Gdiplus
 	class Bitmap;
 }
 
-enum ResultCode;
+enum class ResultCode;
 
 class FileLoader
 {
 private:
-	wchar_t data_path[260];
+	wchar_t resource_path[260];
 	const wchar_t* binary_folder_name;
 	const wchar_t* resource_folder_name;
 
-public:
-	FileLoader(const wchar_t* binary_folder_name, const wchar_t* resource_folder_name);
+private:
+	FileLoader();
 
 public:
-	ResultCode Initialize();
+	static FileLoader& GetInstance();
+
+public:
+	ResultCode Initialize(const wchar_t* binary_folder_name, const wchar_t* resource_folder_name);
 	std::string* LoadTextFile(const wchar_t* file_name);
 	Gdiplus::Bitmap* LoadImageFile(const wchar_t* file_name);
 };

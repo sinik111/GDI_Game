@@ -22,21 +22,21 @@ void Input::Update()
 
     for (int i = 0; i < 256; ++i)
     {
-        current_key_state[i] = GetAsyncKeyState(i);
+        current_key_state[i] = (GetAsyncKeyState(i) & 0x8000) != 0;
     }
 }
 
 bool Input::IsKeyDown(int vkey)
 {
-    return (current_key_state[vkey] & 0x8000) != 0;
+    return current_key_state[vkey];
 }
 
 bool Input::IsKeyPressed(int vkey)
 {
-    return (!(previous_key_state[vkey] & 0x8000) && (current_key_state[vkey] & 0x8000));
+    return (!previous_key_state[vkey] && current_key_state[vkey]);
 }
 
 bool Input::IsKeyReleased(int vkey)
 {
-    return ((previous_key_state[vkey] & 0x8000) && !(current_key_state[vkey] & 0x8000));
+    return (previous_key_state[vkey] && !current_key_state[vkey]);
 }

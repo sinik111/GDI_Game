@@ -8,8 +8,8 @@
 
 #pragma comment(lib, "gdiplus.lib")
 
-GDIRenderer::GDIRenderer(HWND hwnd, int width, int height)
-	: hwnd(hwnd), width(width), height(height), front_buffer_dc(nullptr), back_buffer_dc(nullptr),
+GDIRenderer::GDIRenderer()
+	: hwnd(nullptr), width(0), height(0), front_buffer_dc(nullptr), back_buffer_dc(nullptr),
 	back_buffer_bitmap(nullptr), gdiplus_token(0), back_buffer_graphics(nullptr)
 {
 	DebugLog("GDIRenderer 생성됨");
@@ -20,16 +20,27 @@ GDIRenderer::~GDIRenderer()
 	DebugLog("GDIRenderer 소멸됨");
 }
 
-ResultCode GDIRenderer::Initialize()
+GDIRenderer& GDIRenderer::GetInstance()
+{
+	static GDIRenderer instance;
+	
+	return instance;
+}
+
+ResultCode GDIRenderer::Initialize(HWND hwnd, int width, int height)
 {
 	DebugLog("GDIRenderer::Initialize()");
+
+	this->hwnd = hwnd;
+	this->width = width;
+	this->height = height;
 
 	front_buffer_dc = GetDC(hwnd); // 윈도우 클라이언트 영역의 Device Context 얻기
 	if (front_buffer_dc == nullptr)
 	{
 		DebugLog("GetDC fail - GDIRenderer::Initialize()");
 
-		return RESULT_FAIL;
+		return ResultCode::FAIL;
 	}
 
 	back_buffer_dc = CreateCompatibleDC(front_buffer_dc); // 호환되는 Device Context 생성
@@ -37,7 +48,7 @@ ResultCode GDIRenderer::Initialize()
 	{
 		DebugLog("CreateCompatibleDC fail - GDIRenderer::Initialize()");
 
-		return RESULT_FAIL;
+		return ResultCode::FAIL;
 	}
 
 	back_buffer_bitmap = CreateCompatibleBitmap(front_buffer_dc, width, height); // 메모리 영역 생성
@@ -45,7 +56,7 @@ ResultCode GDIRenderer::Initialize()
 	{
 		DebugLog("CreateCompatibleBitmap fail - GDIRenderer::Initialize()");
 
-		return RESULT_FAIL;
+		return ResultCode::FAIL;
 	}
 
 	SelectObject(back_buffer_dc, back_buffer_bitmap); // MemDC의 메모리 영역 지정
@@ -56,7 +67,7 @@ ResultCode GDIRenderer::Initialize()
 	{
 		DebugLog("Gdiplus::GdiplusStartup fail status: %d - GDIRenderer::Initialize()", (int)status);
 
-		return RESULT_FAIL;
+		return ResultCode::FAIL;
 	}
 	
 	back_buffer_graphics = Gdiplus::Graphics::FromHDC(back_buffer_dc);
@@ -64,10 +75,10 @@ ResultCode GDIRenderer::Initialize()
 	{
 		DebugLog("Gdiplus::Graphics::FromHD fail - GDIRenderer::Initialize()");
 
-		return RESULT_FAIL;
+		return ResultCode::FAIL;
 	}
 
-	return RESULT_OK;
+	return ResultCode::OK;
 }
 
 void GDIRenderer::Shutdown()

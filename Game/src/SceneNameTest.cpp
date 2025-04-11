@@ -25,7 +25,7 @@ void SceneNameTest::Destroy()
 	}
 }
 
-void SceneNameTest::Update(float delta_time)
+void SceneNameTest::Update()
 {
 }
 
@@ -36,8 +36,8 @@ void SceneNameTest::Render(const GDIRenderer& renderer)
 
 	dst_rect.X = 0;
 	dst_rect.Y = 0;
-	dst_rect.Width = renderer.GetWidth();
-	dst_rect.Height = renderer.GetHeight();
+	dst_rect.Width = GDIRenderer::GetInstance().GetWidth();
+	dst_rect.Height = GDIRenderer::GetInstance().GetHeight();
 
 	src_rect.X = 0;
 	src_rect.Y = 0;
