@@ -1,6 +1,16 @@
 #pragma once
 
-#include "SinglyLinkedList.h"
+#include <string>
+
+#include "HashMap.h"
+
+enum class ResourceGroup
+{
+	Game,
+	Title,
+	Play,
+	MAX
+};
 
 namespace Gdiplus
 {
@@ -10,7 +20,18 @@ namespace Gdiplus
 class Resources
 {
 private:
-	SinglyLinkedList<Gdiplus::Bitmap*> images;
+	HashMap<Gdiplus::Bitmap*> images_map[(int)ResourceGroup::MAX];
 
+private:
+	Resources() = default;
 
+public:
+	static Resources& GetInstance();
+
+public:
+	void AddImage(const std::string& name, Gdiplus::Bitmap* image, ResourceGroup group);
+	Gdiplus::Bitmap* GetImage(const std::string& name, ResourceGroup group);
+
+public:
+	void ReleaseResources(ResourceGroup group);
 };

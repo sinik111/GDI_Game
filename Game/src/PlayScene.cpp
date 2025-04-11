@@ -7,6 +7,7 @@
 #include "Input.h"
 #include "SceneManager.h"
 #include "GDIRenderer.h"
+#include "Resources.h"
 
 PlayScene::PlayScene()
 	: object(nullptr)
@@ -37,7 +38,10 @@ ResultCode PlayScene::Initialize()
 		return ResultCode::FAIL;
 	}
 
-	object = new SceneNameTest(image);
+	Resources::GetInstance().AddImage("play_image", image, ResourceGroup::Play);
+
+	object = new SceneNameTest(1);
+	object->Initialize();
 
 	return ResultCode::OK;
 }
@@ -57,4 +61,5 @@ void PlayScene::Render()
 
 void PlayScene::Shutdown()
 {
+	Resources::GetInstance().ReleaseResources(ResourceGroup::Play);
 }

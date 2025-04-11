@@ -11,6 +11,7 @@
 #include "ResultCode.h"
 #include "FileLoader.h"
 #include "SceneManager.h"
+#include "Resources.h"
 
 Game::Game()
 	: is_running(false)
@@ -63,8 +64,9 @@ void Game::Shutdown()
 {
 	DebugLog("Game::Shutdown()");
 
-	GDIRenderer::GetInstance().Shutdown();
+	Resources::GetInstance().ReleaseResources(ResourceGroup::Game);
 	SceneManager::GetInstance().Shutdown();
+	GDIRenderer::GetInstance().Shutdown();
 }
 
 // game loop ---

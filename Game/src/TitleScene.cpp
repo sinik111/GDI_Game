@@ -7,6 +7,7 @@
 #include "Input.h"
 #include "SceneManager.h"
 #include "GDIRenderer.h"
+#include "Resources.h"
 
 TitleScene::TitleScene()
 	: object(nullptr)
@@ -28,6 +29,7 @@ ResultCode TitleScene::Initialize()
 {
 	DebugLog("TitleScene::Initialize()");
 
+
 	Gdiplus::Bitmap* image = FileLoader::GetInstance().LoadImageFile(L"image/title.png");
 	if (image == nullptr)
 	{
@@ -35,7 +37,11 @@ ResultCode TitleScene::Initialize()
 
 		return ResultCode::FAIL;
 	}
-	object = new SceneNameTest(image);
+
+	Resources::GetInstance().AddImage("title_image", image, ResourceGroup::Title);
+
+	object = new SceneNameTest(0);
+	object->Initialize();
 
 	return ResultCode::OK;
 }
@@ -57,5 +63,5 @@ void TitleScene::Render()
 
 void TitleScene::Shutdown()
 {
-	
+	Resources::GetInstance().ReleaseResources(ResourceGroup::Title);
 }

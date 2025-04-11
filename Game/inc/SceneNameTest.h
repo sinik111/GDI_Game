@@ -11,9 +11,10 @@ class SceneNameTest : public GameObject
 {
 private:
 	Gdiplus::Bitmap* image;
+	int id;
 
 public:
-	SceneNameTest(Gdiplus::Bitmap* image);
+	SceneNameTest(int id);
 	virtual ~SceneNameTest();
 
 public: // 초기화, 정리

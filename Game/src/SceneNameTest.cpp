@@ -1,9 +1,10 @@
 #include "SceneNameTest.h"
 
 #include "GDIRenderer.h"
+#include "Resources.h"
 
-SceneNameTest::SceneNameTest(Gdiplus::Bitmap* image)
-	: image(image)
+SceneNameTest::SceneNameTest(int id)
+	:image(nullptr), id(id)
 {
 }
 
@@ -13,16 +14,19 @@ SceneNameTest::~SceneNameTest()
 
 void SceneNameTest::Initialize()
 {
-	
+	if (id == 0)
+	{
+		image = Resources::GetInstance().GetImage("title_image", ResourceGroup::Title);
+	}
+	else
+	{
+		image = Resources::GetInstance().GetImage("play_image", ResourceGroup::Play);
+	}
 }
 
 void SceneNameTest::Destroy()
 {
-	if (image != nullptr)
-	{
-		delete image;
-		image = nullptr;
-	}
+
 }
 
 void SceneNameTest::Update()
